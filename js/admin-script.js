@@ -28,6 +28,16 @@ function addNews() {
     xhttp.send();
 }
 
+function addEvent() {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function (event) {
+        event.preventDefault();
+        document.getElementById('control_window').innerHTML = event.responseText;
+    }
+    xhttp.open("GET", "/ajax/admin-panel/events/add.php");
+    xhttp.send();
+}
+
 function showNotification(message, type = 'error') {
     const notification = document.getElementById('notification');
     notification.style.display = 'block';

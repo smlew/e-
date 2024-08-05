@@ -7,21 +7,30 @@ $result = $mysqli->query($sql);
 $events = [];
 
 while ($row = $result->fetch_assoc()) {
+    
     $event = [
         'id'            => $row['id'],
         'title'         => $row['title'],
         'start'         => $row['start_date'],
         'end'           => $row['end_date'],
-        'description'   => $row['description']
+        'description'   => $row['description'],        
     ];
 
-    // Check for recurrence
     if (!empty($row['recurrence'])) {
+        $recurrenceParts = explode(',', $row['recurrence']);
+        $freq = $recurrenceParts[0]; // "WEEKLY"
+        $byweekday = array_slice($recurrenceParts, 1); // ["MO", "TH"]
+
         $event['rrule'] = [
-            'freq' => 'weekly',
-            'byweekday' => explode(',', substr($row['recurrence'], 8))
+            'freq' => strtolower($freq),
+            'byweekday' => array_map('strtolower', $byweekday)
         ];
     }
+
+
+
+    // Check for recurrence
+
 
     $events[] = $event;
 }

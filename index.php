@@ -41,6 +41,7 @@
                     echo '<p>Witaj '.$row['username'].'. Zapraszamy do serwisu <a href="?logout">Wyloguj sie</a></p>';
                 }?>
             <p>Już jesteś zalogowany w systemie jako: <?php echo $_SESSION['username']; ?>. <a href="logout.php">Wyjdź</a></p>
+            <a href='calendar.php'>Kalendarz</a>
         <?php
             }
             else { ?>

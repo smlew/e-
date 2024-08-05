@@ -31,6 +31,8 @@
 
     <a href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</a>
 
+    <a href="#" onclick="addEvent()" id="event">Dodaj wydarzenie</a>
+
     <div id="control_window">
         
     <div id="notification" style="display: none; background: #f8d7da; color: #721c24; padding: 10px; margin-top: 10px;"></div>
