@@ -30,11 +30,58 @@ function addNews() {
 
 function addEvent() {
     const xhttp = new XMLHttpRequest();
-    xhttp.onload = function (event) {
-        event.preventDefault();
-        document.getElementById('control_window').innerHTML = event.responseText;
+    xhttp.onload = function () {
+
+        const response = JSON.parse(this.responseText);
+        const controlWindow = document.getElementById('control_window');
+        controlWindow.innerHTML = ''; // очищаем содержимое элемента
+
+        // Создаем таблицу
+        const table = document.createElement('table');
+        table.style.width = '100%';
+        table.border = '1';
+
+        // Создаем заголовок таблицы
+        const header = table.createTHead();
+        const headerRow = header.insertRow(0);
+
+        // Добавляем заголовки
+        const headers = ['ID', 'Title', 'Start', 'End', 'Description', 'Freq', 'Byweekday'];
+        headers.forEach((headerText, index) => {
+            const th = document.createElement('th');
+            th.appendChild(document.createTextNode(headerText));
+            headerRow.appendChild(th);
+        });
+
+        // Создаем тело таблицы
+        const tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+
+        // Добавляем строки данных
+        response.forEach(event => {
+            const row = tbody.insertRow();
+
+            // Заполняем строки
+            const cells = [
+                event.id || '',
+                event.title || '',
+                event.start || '',
+                event.end || '',
+                event.description || '',
+                event.rrule.freq || '',
+                event.rrule.byweekday || ''
+            ];
+
+            cells.forEach(cellText => {
+                const cell = row.insertCell();
+                cell.appendChild(document.createTextNode(cellText));
+            });
+        });
+
+        // Добавляем таблицу в controlWindow
+        controlWindow.appendChild(table);
     }
-    xhttp.open("GET", "/ajax/admin-panel/events/add.php");
+    xhttp.open("GET", "/ajax/events/get_events.php");
     xhttp.send();
 }
 

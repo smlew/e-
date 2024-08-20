@@ -25,12 +25,9 @@ while ($row = $result->fetch_assoc()) {
             'freq' => strtolower($freq),
             'byweekday' => array_map('strtolower', $byweekday)
         ];
+
+        
     }
-
-
-
-    // Check for recurrence
-
 
     $events[] = $event;
 }

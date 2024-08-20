@@ -6,9 +6,9 @@
     <title>Calendar</title>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rrule/2.6.8/rrule.min.js" defer></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@5.10.1/main.global.min.js" type='module'></script>
     <script src="https://cdn.jsdelivr.net/npm/rrule@2.6.8/dist/es5/rrule.min.js"></script>
+
     <style>
         #calendar {
         max-width: 900px;
@@ -25,7 +25,6 @@
 
 <script type='module'>
 
-  import 'https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@5.10.1/main.global.min.js';
 
   document.addEventListener('DOMContentLoaded', function() {
 
