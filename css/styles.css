@@ -78,6 +78,12 @@ th.number, td.number {
   min-height: 54px;
   width: 150px;
 }
+
+.delete {
+  color: red;
+}
+
 /* .inner-table td {
   max-width: 150px; //Adjust the max-width for inner table as needed
 } */
+

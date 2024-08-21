@@ -27,6 +27,7 @@
         else {
             echo json_encode(['success' => false, 'message' => 'Błąd przygotowania zapytania: ' . $stmt->error()]);
         }
-    }
 
+    }
+    
 ?>

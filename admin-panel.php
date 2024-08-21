@@ -18,7 +18,12 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./css/styles.css">
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     
+    <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet"/>
+
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@5.10.1/main.global.min.js" type='module'></script>
@@ -128,10 +133,10 @@
                                 }
                             }
 
-                            var eventStart = new Date(dateStr + 'T' + (startTime || '00:00') + ':00');
-                            var eventEnd = endTime ? new Date(dateStr + 'T' + endTime + ':00') : new Date(eventStart.getTime() + 60 * 60 * 1000);
+                            var eventStart = new Date(dateStr + ' ' + (startTime || '00:00') + ':00');
+                            var eventEnd = endTime ? new Date(dateStr + ' ' + endTime + ':00') : new Date(eventStart.getTime());
 
-                            if (eventEnd <= eventStart) {
+                            if (eventEnd < eventStart) {
                                 alert("Data zakończenia nie może być wcześniej niż rozpoczęcia");
                                 return;
                             }
@@ -142,26 +147,20 @@
                                 return;
                             }
 
-                            calendar.addEvent({
-                                title: name,
-                                start: eventStart,
-                                end: eventEnd,
-                                allDay: false
-                            });
-
-                            alert('Great. Now, update your database...');
+                            var description = prompt('Wprowadź opis wydarzeenia');
 
                             const formData = new FormData();
                             formData.append('name', name);
+                            formData.append('description', description.toISOString());
                             formData.append('startTime', eventStart.toISOString());
                             formData.append('endTime', eventEnd.toISOString());
 
                             const xhttp = new XMLHttpRequest();
                             xhttp.onload = function() {
                                 if (xhttp.status === 200) {
-                                    alert('Event successfully added to the database!');
+                                    alert('Odśwież kalendarz');
                                 } else {
-                                    alert('Error adding event to the database.');
+                                    alert(this.responseText);
                                 }
                             };
                             xhttp.open('POST', 'ajax/events/add.php');
@@ -183,7 +182,7 @@
                     };
                     xhr.send();
                 },
-                eventRender: function(info) {
+                eventContent: function(info) {
                     // Обработка отображения рекуррентных событий
                     if (info.event.extendedProps.rrule) {
                         var rrule = new RRule({

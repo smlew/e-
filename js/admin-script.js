@@ -29,9 +29,16 @@ function addNews() {
 }
 
 function addEvent() {
+    // const xhttpCalendar = new XMLHttpRequest();
+    // xhttpCalendar.onload = function () {
+
+    // }
+    // xhttpCalendar.open('GET', 'ajax/events/get_calendar.php');
+    // xhttpCalendar.send();
+
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
-
+        
         const response = JSON.parse(this.responseText);
         const controlWindow = document.getElementById('control_window');
         controlWindow.innerHTML = ''; // очищаем содержимое элемента
@@ -46,7 +53,7 @@ function addEvent() {
         const headerRow = header.insertRow(0);
 
         // Добавляем заголовки
-        const headers = ['ID', 'Title', 'Start', 'End', 'Description', 'Freq', 'Byweekday'];
+        const headers = ['Nazwa', 'Początek', 'Koniec', 'Opis', 'Częstotliwość', 'Dni', 'Usuń'];
         headers.forEach((headerText, index) => {
             const th = document.createElement('th');
             th.appendChild(document.createTextNode(headerText));
@@ -63,19 +70,40 @@ function addEvent() {
 
             // Заполняем строки
             const cells = [
-                event.id || '',
                 event.title || '',
                 event.start || '',
                 event.end || '',
                 event.description || '',
-                event.rrule.freq || '',
-                event.rrule.byweekday || ''
+                event.rrule && event.rrule.freq || '',
+                event.rrule && event.rrule.byweekday || ''
+                
             ];
 
             cells.forEach(cellText => {
                 const cell = row.insertCell();
                 cell.appendChild(document.createTextNode(cellText));
             });
+
+            const deleteCell = row.insertCell();
+            const deleteButton = document.createElement('i');
+            deleteButton.className = 'fas fa-times delete';
+            deleteButton.addEventListener('click', function() {
+                if (confirm('Czy jesteś pewien że chcesz usunąć to wydarzenie?')) {
+                    const xhttp = new XMLHttpRequest();
+                    xhttp.onload = function() {
+                        if (xhttp.status == 200) {
+                            alert('Domyślnie usunięto');
+                            row.remove;
+                        } else {
+                            alert('Usunięcie nie powiodło się');
+                        }
+                    }
+                    xhttp.open('POST', 'ajax/events/delete.php');
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-url-encoded');
+                    xhttp.send('id=' + encodeURIComponent(event.id));
+                }
+            });
+            deleteCell.appendChild(deleteButton);
         });
 
         // Добавляем таблицу в controlWindow

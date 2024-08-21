@@ -13,7 +13,8 @@ while ($row = $result->fetch_assoc()) {
         'title'         => $row['title'],
         'start'         => $row['start_date'],
         'end'           => $row['end_date'],
-        'description'   => $row['description'],        
+        'description'   => $row['description'],   
+        // 'rrule'         => ['freq' => 'NULL', 'byweekday' => 'NULL']
     ];
 
     if (!empty($row['recurrence'])) {
@@ -33,4 +34,5 @@ while ($row = $result->fetch_assoc()) {
 }
 
 echo json_encode($events);
+
 ?>
