@@ -1,7 +1,6 @@
-<?php
-
-include(dirname(__DIR__, 2).'/config.php')
 
 
-
-?>
+<div id="calendar-container">
+    <!-- Контейнер для календаря -->
+    <div id="calendarEl"></div>
+</div>

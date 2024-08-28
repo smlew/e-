@@ -28,20 +28,178 @@ function addNews() {
     xhttp.send();
 }
 
-function addEvent() {
-    // const xhttpCalendar = new XMLHttpRequest();
-    // xhttpCalendar.onload = function () {
+function payments() {
+    const controlWindow = document.getElementById('control_window');
+    controlWindow.innerHTML = '';
 
-    // }
-    // xhttpCalendar.open('GET', 'ajax/events/get_calendar.php');
-    // xhttpCalendar.send();
+    const searchForm = document.createElement('form');
+    searchForm.id = 'searchForm';
+    searchForm.method = 'get';
+
+    const inputSearch = document.createElement('input');
+    inputSearch.type = 'text';
+    inputSearch.name = 'query';
+    inputSearch.placeholder = 'Wyszukaj mieszkanie';
+
+    const inputButton = document.createElement('input');
+    inputButton.type = 'submit';
+    inputButton.value = 'Szukaj';
+
+    const buttonShow = document.createElement('button');
+    buttonShow.innerHTML = 'Pokaż wszystkie mieszkania';
+    buttonShow.onclick = function(event) {
+        event.preventDefault();
+        loadPayments(null, checkBox.checked ? 'no' : 'all');
+    };
+
+    const checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
+    checkBox.id = 'paid';
+    checkBox.checked = false;
+
+    const labelShow = document.createElement('label');
+    labelShow.htmlFor = 'paid';
+    labelShow.innerHTML = 'Pokaż tylko nieopłacone'
+
+
+
+    const table = document.createElement('div');
+    table.id = 'tableWindow';
+
+    
+    searchForm.appendChild(inputSearch);
+    searchForm.appendChild(inputButton);
+    searchForm.appendChild(checkBox);
+    searchForm.appendChild(labelShow);
+    searchForm.appendChild(document.createElement('br'))
+    searchForm.appendChild(buttonShow);
+    controlWindow.appendChild(searchForm);
+    
+    controlWindow.appendChild(table);
+    
+    searchForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const query = event.target.query.value;
+        if (query === '') {
+            loadPayments(null, checkBox.checked ? 'no' : 'all');
+        }
+        else {
+            loadPayments(query, checkBox.checked ? 'no' : 'all');
+        }
+        
+    });
+
+    loadPayments(null, checkBox.checked ? 'no' : 'all');
+}
+
+function loadPayments(number = null, paid, currentMonthYear = new Date().toISOString().substring(0, 7) + '-01') {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        const payments = JSON.parse(this.responseText);
+
+        const controlWindow = document.getElementById('tableWindow');
+        controlWindow.innerHTML = '';
+
+        const table = document.createElement('table');
+        const tbodyCreate = document.createElement('tbody');
+        
+        table.appendChild(tbodyCreate);
+        controlWindow.appendChild(table);
+        
+        const tbody = table.getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+
+        const header = table.createTHead();
+        const headerRow = header.insertRow(0);
+
+        const headers = ['Numer mieszkania', 'Kwota', 'Miesiąc zapłaty', 'Data zapłaty', 'Status', 'Odznaczyć'];
+        headers.forEach((headerText) => {
+            const th = document.createElement('th');
+            th.appendChild(document.createTextNode(headerText));
+            headerRow.appendChild(th);
+        });
+
+        payments.forEach(payment => {
+            const row = tbody.insertRow();
+
+            row.insertCell(0).innerText = payment.number;
+            row.insertCell(1).innerText = payment.amount;
+
+            const date = new Date(payment.month_year);
+            const options = { year: 'numeric', month: 'long' };
+            const formattedMonthYear = date.toLocaleString('pl-PL', options);
+
+            row.insertCell(2).innerText = formattedMonthYear;
+            row.insertCell(3).innerText = payment.payment_date || ' - ';
+
+            if (payment.status == 'overdue') {
+                row.insertCell(4).innerText = 'Zaległość';
+            }
+            else if (payment.status == 'paid') {
+                row.insertCell(4).innerText = 'Opłacono';
+            }
+            else { row.insertCell(4).innerText = 'Nie opłacono'; }
+
+            const actionCell = row.insertCell(5);
+            if (payment.status !== 'paid') {
+                const payButton = document.createElement('button');
+                payButton.innerText = 'Odznaczyć jako opłacono';
+                payButton.onclick = function () {
+                    updatePaymentStatus(payment.id);
+                };
+                actionCell.appendChild(payButton);
+            }
+        });
+    };
+    xhttp.open('GET', 'ajax/admin-panel/payments/get_list.php?number=' + number + '&paid=' + paid, true);
+    xhttp.send();
+}
+
+function updatePaymentStatus(paymentId) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+        if (this.response.success) {
+            loadPayments(null, checkBox.checked ? 'all' : 'no');
+        } else {
+            alert(this.responseText);
+        }
+    };
+    xhttp.open('POST', 'ajax/admin-panel/payments/update_status.php', true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhttp.send('id=' + paymentId);
+}
+
+
+function addEvent() {
 
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
-        
-        const response = JSON.parse(this.responseText);
         const controlWindow = document.getElementById('control_window');
         controlWindow.innerHTML = ''; // очищаем содержимое элемента
+        
+        
+        const response = JSON.parse(this.responseText);
+
+        const divCalendar = document.createElement('div');
+        divCalendar.id = 'calendar';
+        controlWindow.appendChild(divCalendar);
+        
+        const xhttpCalendar = new XMLHttpRequest();
+        xhttpCalendar.onload = function () {
+            if (xhttpCalendar.status === 200) {
+                document.getElementById('calendar').innerHTML = this.responseText;
+        
+                // Инициализация календаря
+                const script = document.createElement('script');
+                script.src = 'js/calendar-init.js';
+                document.head.appendChild(script);
+            } else {
+                console.error("Błąd: " + xhttpCalendar.statusText);
+            }
+        };
+        xhttpCalendar.open('GET', 'ajax/events/get_calendar.php', true);
+        xhttpCalendar.send();
 
         // Создаем таблицу
         const table = document.createElement('table');
@@ -54,7 +212,7 @@ function addEvent() {
 
         // Добавляем заголовки
         const headers = ['Nazwa', 'Początek', 'Koniec', 'Opis', 'Częstotliwość', 'Dni', 'Usuń'];
-        headers.forEach((headerText, index) => {
+        headers.forEach((headerText) => {
             const th = document.createElement('th');
             th.appendChild(document.createTextNode(headerText));
             headerRow.appendChild(th);
@@ -74,8 +232,8 @@ function addEvent() {
                 event.start || '',
                 event.end || '',
                 event.description || '',
-                event.rrule && event.rrule.freq || '',
-                event.rrule && event.rrule.byweekday || ''
+                event.rrule?.freq || '',
+                event.rrule?.byweekday || ''
                 
             ];
 
@@ -92,14 +250,14 @@ function addEvent() {
                     const xhttp = new XMLHttpRequest();
                     xhttp.onload = function() {
                         if (xhttp.status == 200) {
-                            alert('Domyślnie usunięto');
-                            row.remove;
+                            alert('Usunięcie powiodło się');
+                            addEvent();
                         } else {
                             alert('Usunięcie nie powiodło się');
                         }
                     }
                     xhttp.open('POST', 'ajax/events/delete.php');
-                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-url-encoded');
+                    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                     xhttp.send('id=' + encodeURIComponent(event.id));
                 }
             });
@@ -112,6 +270,8 @@ function addEvent() {
     xhttp.open("GET", "/ajax/events/get_events.php");
     xhttp.send();
 }
+
+window.addEvent = addEvent;
 
 function showNotification(message, type = 'error') {
     const notification = document.getElementById('notification');
