@@ -1,6 +1,12 @@
 <?php
 include dirname(__DIR__, 3).'/config.php';
 
+if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Forbidden']);
+    exit;
+}
+
 $paymentId = $_POST['id'];
 $paymentDate = date('Y-m-d');
 $status = 'paid';

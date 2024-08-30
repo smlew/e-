@@ -1,6 +1,12 @@
 <?php
 include dirname(__DIR__, 2) . '/config.php';
 
+if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Forbidden']);
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Получаем данные из POST запроса
     $name = isset($_POST['name']) ? $_POST['name'] : null;

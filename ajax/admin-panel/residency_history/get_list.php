@@ -51,11 +51,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 
     if (mysqli_num_rows($result) > 0) {
-
-        
-        
-        
-
         ?>
         <table>
             <thead>
@@ -71,7 +66,6 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             <tbody>
 
         <?php
-
 
 
         while ($row = $result -> fetch_assoc()) {

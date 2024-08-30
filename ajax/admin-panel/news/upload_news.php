@@ -19,6 +19,8 @@ if (isset($_POST['title'])) {
         die ("Błąd podczas przesyłania pliku: " . $_FILES["image"]["error"]); 
     }
     else {
+
+        
         // Sprawdzenie, czy plik został przesłany
         if ($_FILES['image']['error'] == UPLOAD_ERR_OK) {
             $fileName = NULL;
@@ -35,7 +37,7 @@ if (isset($_POST['title'])) {
             }
 
             // Ustaw katalog do zapisywania przesłanych obrazów
-            $uploadDir = dirname(__DIR__,1)."/uploads/";
+            $uploadDir = dirname(__DIR__, 3)."/uploads/";
 
             // Generowanie unikalnej nazwy pliku na podstawie bieżącego znacznika czasu
             $fileName = uniqid() . "_" . basename($_FILES["image"]["name"]);
@@ -44,7 +46,7 @@ if (isset($_POST['title'])) {
             $uploadFile = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $uploadFile)) {
-                $imagePath = $uploadFile;
+                $imagePath = '/uploads/'. $fileName;
             } else {
                 throw new Exception("Błąd podczas ładowania zdjęcia.");
             }
@@ -65,7 +67,7 @@ if (isset($_POST['title'])) {
 
 
             // Zapytanie SQL do wstawienia danych do bazy danych
-            $sql = "INSERT INTO news (user, title, text, date_published, image_path) VALUES ('$_SESSION[user_id]','$title', '$text', '$date', '$imagePath')";
+            $sql = "INSERT INTO news (user_id, title, text, date_published, image_path) VALUES ('$_SESSION[user_id]','$title', '$text', '$date', '$imagePath')";
 
             if ($mysqli->query($sql) === TRUE) {
                 die('ok');
