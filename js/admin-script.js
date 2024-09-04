@@ -28,6 +28,61 @@ function addNews() {
     xhttp.send();
 }
 
+function loadIssues() {
+    const xhttp = new XMLHttpRequest();
+
+    xhttp.onload = function() {
+        const issues = JSON.parse(this.response);
+
+
+        const controlWindow = document.getElementById('control_window');
+        controlWindow.innerHTML = '';
+        
+        const table = document.createElement('table');
+        const tbodyCreate = document.createElement('tbody');
+
+        table.appendChild(tbodyCreate);
+        controlWindow.appendChild(table);
+
+        const tbody = table.getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+
+        const header = table.createTHead();
+        const headerRow = header.insertRow(0);
+
+        const headers = ['Mieszkanie', 'Opis', 'Data zgłoszenia', 'Status', 'Odznaczyć'];
+        headers.forEach((headerText) => {
+            const th = document.createElement('th');
+            th.appendChild(document.createTextNode(headerText));
+            headerRow.appendChild(th);
+        });
+
+        issues.forEach(issue => {
+            const row = tbody.insertRow();
+
+            row.insertCell(0).innerText = issue.number + issue.letter;
+            row.insertCell(1).innerText = issue.descriptionL;
+            row.insertCell(2).innerText = issue.created_at;
+            row.insertCell(3).innerText = issue.status;
+
+            row.onclick = function () { viewIssue(issue.id); }
+
+            if (issue.status !== 'resolved') {
+                const resolveBtn = document.createElement('button');
+                resolveBtn.innerText = 'Oznacz jako naprawione';
+                resolveBtn.onclick = function () { resolveIsue(issue.id); }
+            }
+
+            tbody.appendChild(row);
+        })
+
+
+
+    };
+    xhttp.open('GET', 'ajax/admin-panel/reports/get_reports.php', true);
+    xhttp.send();
+}
+
 function payments() {
     const controlWindow = document.getElementById('control_window');
     controlWindow.innerHTML = '';

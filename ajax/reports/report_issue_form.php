@@ -5,4 +5,4 @@
 </form>
 <div id="errorMessage"></div>
 
-<script src="./js/report-issue.js"></script>
+<script src="/js/report-issue.js"></script>

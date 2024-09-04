@@ -65,8 +65,6 @@
                 $stmt->bind_param("ssssss", $username, $hashed_password, $email, $salt, $name, $last_name);
                 
                 $stmt->execute();
-
-                echo($stmt->execute());
                 
                 die('ok');
 

@@ -54,6 +54,8 @@
     
     <a href="#" onclick="payments()" id="payment">Opłata miesięczna</a>
 
+    <a href="#" onclick="loadIssues()" id="issues">Usterki</a>
+
 
     <div id="control_window"></div>
         
