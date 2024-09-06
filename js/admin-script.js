@@ -60,19 +60,24 @@ function loadIssues() {
         issues.forEach(issue => {
             const row = tbody.insertRow();
 
-            row.insertCell(0).innerText = issue.number + issue.letter;
+            row.insertCell(0).innerText = issue.number + (issue.letter ? issue.letter : '');
             row.insertCell(1).innerText = issue.descriptionL;
             row.insertCell(2).innerText = issue.created_at;
             row.insertCell(3).innerText = issue.status;
 
-            row.onclick = function () { viewIssue(issue.id); }
+            row.onclick = (function () { viewIssue(issue.id); });
+
+            const actionCell = row.insertCell(4);
 
             if (issue.status !== 'resolved') {
                 const resolveBtn = document.createElement('button');
                 resolveBtn.innerText = 'Oznacz jako naprawione';
-                resolveBtn.onclick = function () { resolveIsue(issue.id); }
+                resolveBtn.onclick = (function (event) {
+                    event.stopPropagation();
+                    resolveIssue(issue.id);
+                });
+                actionCell.appendChild(resolveBtn);
             }
-
             tbody.appendChild(row);
         })
 
@@ -81,6 +86,20 @@ function loadIssues() {
     };
     xhttp.open('GET', 'ajax/admin-panel/reports/get_reports.php', true);
     xhttp.send();
+}
+
+function viewIssue(id) {
+    alert(id);
+}
+
+function resolveIssue(id) {
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        alert(this.responseText);
+    };
+    xhttp.open('POST', 'ajax/admin-panel/reports/resolve.php', true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+    xhttp.send('id=' + encodeURIComponent(id));
 }
 
 function payments() {
@@ -212,6 +231,7 @@ function loadPayments(number = null, paid, currentMonthYear = new Date().toISOSt
 }
 
 function updatePaymentStatus(paymentId) {
+    alert(paymentId);
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
         if (this.response.success) {
@@ -395,7 +415,7 @@ function residents_list() {
                 }
             }
             xhttp.open("POST","ajax/admin-panel/residents/add_resident_to_apartment.php", true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-urlencoded");
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(params.toString());
         });
     }
@@ -421,7 +441,7 @@ function apartments_list() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
-            document.getElementById('control_window').innerHTML = this.response;
+            document.getElementById('control_window').innerHTML = this.responseText;
 
             get_apartments_list('a');
 

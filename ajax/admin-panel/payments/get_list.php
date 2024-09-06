@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
 $number = isset($_GET['number']) ? $_GET['number'] : null;
 $paid = isset($_GET['paid']) ? $_GET['paid'] : null;
 
-$sql = "SELECT apartments.id, number, amount, payment_date, status, month_year
+$sql = "SELECT payments.id, number, amount, payment_date, status, month_year
         FROM payments
         LEFT JOIN apartments ON payments.apartment_id = apartments.id";
 

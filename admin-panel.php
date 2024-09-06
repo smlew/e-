@@ -19,6 +19,14 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./css/styles.css">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     
@@ -42,24 +50,34 @@
 
 </head>
 <body>
-    <a href="#" onclick="addNews()" id="addNews">Dodaj nowość</a>
 
-    <a href="#" onclick="apartments_list()" id="apartments">Lista mieszkań</a>
+    <?php
+        include 'nav-bar.php';
+    ?>
 
-    <a href="#" onclick="residents_list()" id="residents">Lista mieszkańców</a>
+    <div class="container-xl">
 
-    <a href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</a>
+        <a href="#" onclick="addNews()" id="addNews">Dodaj nowość</a>
 
-    <a href="#" onclick="addEvent()" id="event">Wydarzenie</a>
-    
-    <a href="#" onclick="payments()" id="payment">Opłata miesięczna</a>
+        <a href="#" onclick="apartments_list()" id="apartments">Lista mieszkań</a>
 
-    <a href="#" onclick="loadIssues()" id="issues">Usterki</a>
+        <a href="#" onclick="residents_list()" id="residents">Lista mieszkańców</a>
 
+        <a href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</a>
 
-    <div id="control_window"></div>
+        <a href="#" onclick="addEvent()" id="event">Wydarzenie</a>
         
-    <div id="notification" style="display: none; background: #f8d7da; color: #721c24; padding: 10px; margin-top: 10px;"></div>
+        <a href="#" onclick="payments()" id="payment">Opłata miesięczna</a>
+
+        <a href="#" onclick="loadIssues()" id="issues">Usterki</a>
+
+
+        <div id="control_window"></div>
+            
+        <div id="notification" style="display: none; background: #f8d7da; color: #721c24; padding: 10px; margin-top: 10px;"></div>
+        
+    </div>
+
 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

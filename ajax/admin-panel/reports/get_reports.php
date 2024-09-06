@@ -8,6 +8,7 @@ if (!$_SESSION['admin'] and !$_SESSION['logged']) {
 }
 
 $sql = 'SELECT
+            reports.id,
             apartments.number,
             apartments.letter,
             CASE

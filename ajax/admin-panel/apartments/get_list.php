@@ -8,6 +8,7 @@
     SELECT
         apartments.id AS apartment_id,
         apartments.number AS apartment_number,
+        apartments.letter AS apartment_letter,
         apartments.floor AS apartment_floor,
         apartments.letter AS apartment_letter,
         users.id AS user_id,
@@ -50,7 +51,6 @@
     echo '<table class="inner-table">
         <thead>
             <tr>
-                <th class="number">ID Mieszkania</th>
                 <th class="number">Numer Mieszkania</th>
                 <th class="number">Piętro</th>
                 <th>Mieszkańcy (id, imię i nazwisko)</th>
@@ -61,10 +61,7 @@
     foreach ($apartments as $apartment) { ?>
         <tr>
             <td class="number">
-                <?php echo htmlspecialchars($apartment['id']); ?>
-            </td>
-            <td class="number">
-                <?php echo htmlspecialchars($apartment['number']); ?>
+                <?php echo (htmlspecialchars(($apartment['number']) . ((isset($apartment['letter']) ? $apartment['letter'] : '')))); ?>
             </td>
             <td class="number">
                 <?php echo htmlspecialchars($apartment['floor']); ?>
@@ -73,7 +70,7 @@
             if (count($apartment['users']) > 0) {
                 $first_user = array_shift($apartment['users']); ?>
                 <td>
-                    <table border="1">
+                    <table>
                         <tbody>
                         <tr>
                             <td><?php echo htmlspecialchars($first_user['id']); ?></td>

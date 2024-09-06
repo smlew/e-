@@ -1,5 +1,5 @@
     <div class="login">
-        <img src="" alt="Logo">
+
         <h1>Logowanie</h1>
         <p>Podaj login oraz hasło</p>
 
@@ -15,7 +15,7 @@
     </div>
 
     <div class="registration"> 
-        <img src="" alt="Logo">
+
         <h1>Rejestracja</h1>
         <p>Podaj login oraz hasło</p>
 
