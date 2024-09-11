@@ -48,7 +48,7 @@
             ];
         }
     }
-    echo '<table class="inner-table">
+    echo '<table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th class="number">Numer Mieszkania</th>

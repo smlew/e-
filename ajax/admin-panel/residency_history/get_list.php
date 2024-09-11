@@ -52,7 +52,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if (mysqli_num_rows($result) > 0) {
         ?>
-        <table>
+        <table class= "table table-striped table-hover">
             <thead>
                 <tr>
                     <th>Imię</th>

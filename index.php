@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href="./css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -21,35 +20,53 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <title>E-Osiedle</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-    <?php 
-        if($_SESSION['logged'] && isset($_SESSION['username'])){
-            $sql = "SELECT * FROM users WHERE id = '{$_SESSION['user_id']}'";
-            $result = $mysqli -> query($sql);
-            $row = $result -> fetch_assoc();
-        }
+    <?php
         include 'nav-bar.php';
     ?>
         
 
     <div class="container-xl">
-        <header>
-            <h1>Witamy w portalu mieszkańca</h1>
-            <p>Zarządzaj swoimi płatnościami, zgłaszaj usterki i otrzymuj informacje o swoim osiedlu</p>
-        </header>
 
-        <div class="row align-items-center">
-            <div class="col"></div>
+    <div class="row header-index">
+        <div class="col-lg-6 order-lg-1 header-text">
+            <span>Witamy na portalu mieszkańca!</span>
+
+            <h1>
+                E-osiedle to portal dla mieszkańców i administratorów budynków wielorodzinnych
+            </h1>
+            <br>
+            <p>
+            Cieszymy się, że dołączyłeś do naszego systemu zarządzania mieszkaniami. Dzięki naszemu portalowi możesz łatwo zgłaszać usterki, przeglądać najnowsze ogłoszenia oraz śledzić harmonogram wywozu śmieci i prac konserwacyjnych.
+            </p>
         </div>
-        
+        <div class="col-lg-6 order-lg-1">
+            <img class="index-img-1" src="osiedle-1.jpg" alt="">
+        </div>
+    </div>
+    <hr>
+
+    <div class="row header-index-2" style="margin-top: 80px;">
+        <div class="col-lg-5 order-lg-1">
+            <img class="index-img-1" src="osiedle-2.jpg" alt="">
+        </div>
+        <div class="col-lg-7 order-lg-1 header-text">
+            <p>
+            Naszym celem jest zapewnienie Ci wygodnego dostępu do wszystkich najważniejszych informacji dotyczących Twojego mieszkania oraz umożliwienie szybkiego kontaktu z administracją osiedla.
+            </p>
+        </div>
 
     </div>
+    
+    </div>
+
+<?php
+    include 'footer.php';
+?>
 
     
-    <footer>
-        <p>E-Osiedle - Zarządzanie mieszkaniami © 2024</p>
-    </footer>
+
     
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

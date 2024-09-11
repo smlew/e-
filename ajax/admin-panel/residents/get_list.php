@@ -18,7 +18,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     if(mysqli_num_rows($result) > 0) {
         echo '
-            <table border="1">
+            <table border="1" class = "table table-striped table-hover">
                 <tr>
 
                     <th>id</th>

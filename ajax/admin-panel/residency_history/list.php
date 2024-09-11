@@ -1,4 +1,4 @@
-<form id="searchHistoryForm">
+<form id="searchHistoryForm" action="">
     <input type="text" name="query" placeholder="Wyszukaj mieszkanie">
     <input type="submit" value="Szukaj">
 </form>

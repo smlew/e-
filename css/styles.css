@@ -69,7 +69,6 @@ table {
 
 }
 th, td {
-  border: 1px solid black;
   padding: 8px;
   text-align: center;
 }
@@ -89,24 +88,76 @@ th.number, td.number {
 /* .inner-table td {
   max-width: 150px; //Adjust the max-width for inner table as needed
 } */
+.admin-container {
+  padding: 20px;
+}
 
 header {
   padding: 40px;
   text-align: center;
 }
 
-footer {
+.wrapper{
+  height: 100vh;
+}
+
+.footer {
   text-align: center;
   padding: 20px;
   background-color: #333;
   color: white;
 
-  position: fixed;
+
   bottom: 0;
   left: 0;
   width: 100%;
 }
 
-footer p {
+.footer p {
   margin-bottom: 0;
 }
+
+.control-window {
+  padding-top: 20px;
+}
+
+.control-window form {
+  padding: 10px;
+}
+
+.control-window form input, .control-window form input {
+  margin: 2px;
+}
+
+.news-list-class {
+  padding: 40px;
+}
+
+.header-announcement, .header-report {
+  padding-top: 20px;
+}
+
+.btn-more {
+  margin-bottom: 20px;
+}
+
+.greeting-image {
+  max-width: 300px;
+}
+
+.header-index {
+  padding: 50px;
+}
+
+.header-index-2 {
+  background-color: #e9ecef;
+}
+
+.index-img-1 {
+  max-width: 100%;
+}
+
+.header-text {
+  padding-top: 80px;
+}
+

@@ -1,3 +1,11 @@
+<?php
+    if($_SESSION['logged'] && isset($_SESSION['username'])){
+        $sql = "SELECT * FROM users WHERE id = '{$_SESSION['user_id']}'";
+        $result = $mysqli -> query($sql);
+        $row = $result -> fetch_assoc();
+    }
+?>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-xl">
         <a class="navbar-brand" href="index.php">E-Osiedle</a>
@@ -7,16 +15,16 @@
         <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="news.php">Ogłoszenia</a>
+                    <a class="nav-link" href="announcements.php">Ogłoszenia</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="calendar.php">Kalendarz</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if((isset($_SESSION['admin']) and $_SESSION['admin'] == true ) or ($_SESSION['logged']) == false) { echo htmlspecialchars('disabled'); } ?>" href="#">Zgłoś usterkę</a>
+                    <a class="nav-link <?php if((isset($_SESSION['admin']) and $_SESSION['admin'] == true ) or ($_SESSION['logged']) == false) { echo htmlspecialchars('disabled'); } ?>" href="report.php">Zgłoś usterkę</a>
                 </li>
                 <?php
-                    if ($_SESSION['admin']) {
+                    if (isset($_SESSION['admin']) && $_SESSION['admin']) {
                     ?>
                         <li class="nav-item">
                             <a class="nav-link" href="admin-panel.php">Panel administracyjny</a>
@@ -27,10 +35,10 @@
 
             </ul>
 
-            <form class="d-flex nav-search-form" role="search">
+            <!-- <form class="d-flex nav-search-form" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+            </form> -->
             <?php
                 if($_SESSION['logged'] && isset($_SESSION['username'])){
             ?>

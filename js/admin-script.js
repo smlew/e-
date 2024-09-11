@@ -1,3 +1,13 @@
+const triggerTabList = document.querySelectorAll('#myTab button')
+triggerTabList.forEach(triggerEl => {
+    const tabTrigger = new bootstrap.Tab(triggerEl)
+
+    triggerEl.addEventListener('click', event => {
+        event.preventDefault()
+        tabTrigger.show()
+    })
+})
+
 function addNews() {
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
@@ -41,7 +51,13 @@ function loadIssues() {
         const table = document.createElement('table');
         const tbodyCreate = document.createElement('tbody');
 
+        const h2 = document.createElement('h2');
+        h2.innerHTML = "Lista usterek";
+
+        table.className = "table table-striped table-hover";
+
         table.appendChild(tbodyCreate);
+        controlWindow.appendChild(h2);
         controlWindow.appendChild(table);
 
         const tbody = table.getElementsByTagName('tbody')[0];
@@ -106,6 +122,9 @@ function payments() {
     const controlWindow = document.getElementById('control_window');
     controlWindow.innerHTML = '';
 
+    const header = document.createElement('h2');
+    header.innerHTML = "Lista opłat";
+
     const searchForm = document.createElement('form');
     searchForm.id = 'searchForm';
     searchForm.method = 'get';
@@ -140,16 +159,17 @@ function payments() {
     const table = document.createElement('div');
     table.id = 'tableWindow';
 
-    
+    controlWindow.appendChild(header);
+    controlWindow.appendChild(searchForm);
     searchForm.appendChild(inputSearch);
     searchForm.appendChild(inputButton);
-    searchForm.appendChild(checkBox);
-    searchForm.appendChild(labelShow);
-    searchForm.appendChild(document.createElement('br'))
-    searchForm.appendChild(buttonShow);
-    controlWindow.appendChild(searchForm);
-    
+    controlWindow.appendChild(checkBox);
+    controlWindow.appendChild(labelShow);
+    controlWindow.appendChild(document.createElement('br'))
+    controlWindow.appendChild(buttonShow);
+
     controlWindow.appendChild(table);
+
     
     searchForm.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -177,6 +197,8 @@ function loadPayments(number = null, paid, currentMonthYear = new Date().toISOSt
 
         const table = document.createElement('table');
         const tbodyCreate = document.createElement('tbody');
+
+        table.className = "table table-striped table-hover";
         
         table.appendChild(tbodyCreate);
         controlWindow.appendChild(table);
@@ -278,8 +300,8 @@ function addEvent() {
 
         // Создаем таблицу
         const table = document.createElement('table');
-        table.style.width = '100%';
-        table.border = '1';
+
+        table.className = "table table-striped table-hover";
 
         // Создаем заголовок таблицы
         const header = table.createTHead();

@@ -17,7 +17,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="./css/styles.css">
+    
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -37,6 +37,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@5.10.1/main.global.min.js" type='module'></script>
     <script src="https://cdn.jsdelivr.net/npm/rrule@2.6.8/dist/es5/rrule.min.js"></script>
 
+    <link rel="stylesheet" href="./css/styles.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -49,34 +51,47 @@
     <title>Admin panel</title>
 
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
     <?php
         include 'nav-bar.php';
     ?>
 
-    <div class="container-xl">
+    <div class="container-xl admin-container">
 
-        <a href="#" onclick="addNews()" id="addNews">Dodaj nowość</a>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="true" href="#" onclick="addNews()" id="addNews">Dodaj nowość</a>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="apartments_list()" id="apartments">Mieszkania</a>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residents_list()" id="residents">Mieszkańcy</a>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</a>
+            </li>
+            <li>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="addEvent()" id="event">Wydarzenia</a>
+            </li>
+            <li>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="payments()" id="payment">Opłata miesięczna</a>
+            </li>
+            <li>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="loadIssues()" id="issues">Usterki</a>
+            </li>
+        </ul>
 
-        <a href="#" onclick="apartments_list()" id="apartments">Lista mieszkań</a>
-
-        <a href="#" onclick="residents_list()" id="residents">Lista mieszkańców</a>
-
-        <a href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</a>
-
-        <a href="#" onclick="addEvent()" id="event">Wydarzenie</a>
-        
-        <a href="#" onclick="payments()" id="payment">Opłata miesięczna</a>
-
-        <a href="#" onclick="loadIssues()" id="issues">Usterki</a>
-
-
-        <div id="control_window"></div>
+        <div class="control-window"  id="control_window"></div>
             
         <div id="notification" style="display: none; background: #f8d7da; color: #721c24; padding: 10px; margin-top: 10px;"></div>
         
     </div>
+
+<?php
+    include 'footer.php'
+?>
 
 
     

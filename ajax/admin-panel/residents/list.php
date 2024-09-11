@@ -4,7 +4,7 @@
 include (dirname(__DIR__, 3).'/config.php');
 
 ?>
-
+<h2>Lista mieszkańców</h2>
 <form id="resident_search" action="">
     <input type="text" name="query" placeholder="Wyszukaj mieszkańca">
     <input type="submit" value="Szukaj">
