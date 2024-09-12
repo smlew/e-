@@ -104,7 +104,7 @@ function loadIssues() {
 }
 
 function viewIssue(id) {
-    alert(id);
+    window.location.href = "report.php?id=" + id;
 }
 
 function resolveIssue(id) {

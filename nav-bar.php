@@ -21,7 +21,7 @@
                     <a class="nav-link" href="calendar.php">Kalendarz</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if((isset($_SESSION['admin']) and $_SESSION['admin'] == true ) or ($_SESSION['logged']) == false) { echo htmlspecialchars('disabled'); } ?>" href="report.php">Zgłoś usterkę</a>
+                    <a class="nav-link <?php if((isset($_SESSION['admin']) and $_SESSION['admin'] == true ) or ($_SESSION['logged']) == false) { echo htmlspecialchars('disabled'); } ?>" href="report_submit.php">Zgłoś usterkę</a>
                 </li>
                 <?php
                     if (isset($_SESSION['admin']) && $_SESSION['admin']) {
