@@ -83,7 +83,7 @@ $stmt->close();
     
     <?php if ($image_path): ?>
         <div class="text-center image">
-            <img src="<?php echo $image_path; ?>" alt="Obraz związany z nowością" class="img-fluid">
+            <img src="<?php echo $image_path; ?>" alt="Obraz związany z ogłoszeniem" class="img-fluid">
         </div>
     <?php endif; ?>
     

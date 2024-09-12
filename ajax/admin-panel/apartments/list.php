@@ -1,4 +1,4 @@
-<h2>Lista mieszkań</h2>
+<h1>Lista mieszkań</h1>
 <form id="searchForm" action="" method="get">
     <input type="text" name="query" placeholder="Wyszukaj mieszkanie">
     <input type="submit" value="Szukaj">

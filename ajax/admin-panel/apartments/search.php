@@ -2,6 +2,8 @@
 
 include dirname(__DIR__, 3).'/config.php';
 
+$query = isset($_GET['query']) ? $_GET['query'] : '';
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $sql = $mysqli->prepare("
@@ -44,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             ];
         }
     }
-    echo '<table class="inner-table">
+    echo '<table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th class="number">ID Mieszkania</th>

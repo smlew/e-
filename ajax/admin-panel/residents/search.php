@@ -15,7 +15,7 @@ else if($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ($stmt->execute()) {
         $result = $stmt -> get_result();
         echo '
-        <table border="1">
+        <table class="table table-striped table-hover">
             <tr>
                 <th>id</th>
                 <th>Imię</th>

@@ -44,7 +44,6 @@ function loadIssues() {
     xhttp.onload = function() {
         const issues = JSON.parse(this.response);
 
-
         const controlWindow = document.getElementById('control_window');
         controlWindow.innerHTML = '';
         

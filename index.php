@@ -31,7 +31,7 @@
 
     <div class="row header-index">
         <div class="col-lg-6 order-lg-1 header-text">
-            <span>Witamy na portalu mieszkańca!</span>
+            <span>Witamy na portalu!</span>
 
             <h1>
                 E-osiedle to portal dla mieszkańców i administratorów budynków wielorodzinnych

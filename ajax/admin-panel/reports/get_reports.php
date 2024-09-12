@@ -12,14 +12,13 @@ $sql = 'SELECT
             apartments.number,
             apartments.letter,
             CASE
-                WHEN LENGTH(description) > 10 THEN LEFT(description, 10)
+                WHEN LENGTH(description) > 32 THEN CONCAT(LEFT(description, 32), "...")
                 ELSE description
             END AS descriptionL,
             created_at, 
             status
         FROM reports LEFT JOIN apartments ON apartments.id = reports.apartment_id';
 $stmt = $mysqli -> query($sql);
-$row = $stmt -> fetch_assoc();
 $issues = array();
 while($row = $stmt -> fetch_assoc()) {
     $issues[] = $row;
