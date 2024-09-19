@@ -9,7 +9,9 @@ if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $number = $_POST['number'];
+    $letter = isset($_POST['letter']) ? $_POST['letter'] : null;
     $floor = $_POST['floor'];
+    
 
     if (empty($number) || !is_numeric($number)){
         echo json_encode(['success' => false, 'message' => 'Błędny numer mieszkania']);
@@ -22,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     // Dodaj nowe mieszkanie do bazy danych
-    $stmt = $mysqli->prepare("INSERT INTO apartments (number, floor) VALUES (?, ?)");
-    $stmt->bind_param("ss", $number, $floor);
+    $stmt = $mysqli->prepare("INSERT INTO apartments (number, letter, floor, address_id) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("isii", $number, $letter, $floor, $_SESSION['address_id']);
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Mieszkanie zostało dodane']);
     } else {

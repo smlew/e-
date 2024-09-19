@@ -11,12 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $eventId = $_POST['id'];
 
     if ($eventId) {
-        $sql = "DELETE FROM events WHERE id = ?";
+        $sql = "DELETE e FROM events e INNER JOIN multifamily_residential m ON e.address_id = m.id WHERE e.id = ?";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param('i', $eventId);
 
         if ($stmt->execute()) {
-            echo 'Success';
+            echo 'Success '. $eventId;
         } else {
             http_response_code(500);
             echo 'Error: ' . $stmt->error;

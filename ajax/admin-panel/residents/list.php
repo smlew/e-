@@ -14,20 +14,13 @@ include (dirname(__DIR__, 3).'/config.php');
 
 <div id="resident_list_wrapper"></div>
 
-<?php
+<!--button onclick="document.getElementById('addModal').style.display='block',closeAddModal()">Dodaj mieszkańca</button-->
 
-
-
-?>
-
-<button onclick="document.getElementById('addModal').style.display='block',closeAddModal()">Dodaj mieszkańca</button>
-
-    <!-- Modal -->
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="modal-body">
-                <!-- Formularz edycji zostanie załadowany tutaj -->
+
             </div>
         </div>
         <div id="output_info_update"></div>

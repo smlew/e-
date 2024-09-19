@@ -2,31 +2,56 @@
 <button onclick="get_apartments_list('u')">Pokaż puste mieszkania</button>
 
 <?php
-    include dirname(__DIR__,3).'/config.php';
 
+    include dirname(__DIR__,3).'/config.php';
     $sql = "
     SELECT
-        apartments.id AS apartment_id,
-        apartments.number AS apartment_number,
-        apartments.letter AS apartment_letter,
-        apartments.floor AS apartment_floor,
-        apartments.letter AS apartment_letter,
-        users.id AS user_id,
-        users.name AS name,
-        users.last_name AS last_name
+        apartments.id                   AS apartment_id,
+        apartments.number               AS apartment_number,
+        apartments.letter               AS apartment_letter,
+        apartments.floor                AS apartment_floor,
+        users.id                        AS user_id,
+        users.name                      AS name,
+        users.last_name                 AS last_name,
+        multifamily_residential.id      AS address_id,
+        multifamily_residential.address AS address,
+        multifamily_residential.block   AS block
     FROM
         apartments
-    LEFT JOIN
-        users ON apartments.id = users.apartment_id
-
     ";
 
-    if     ($_GET['settled'] == 'u') { $sql .= " WHERE users.id IS NULL"; }
-    elseif ($_GET['settled'] == 's') { $sql .= " WHERE users.id IS NOT NULL"; }
+    // Логика для отображения заселённых/незаселённых квартир
+    if ($_GET['settled'] == 'u') {
+        // Для незаселённых квартир используем LEFT JOIN
+        $sql .= "
+            LEFT JOIN users ON apartments.id = users.apartment_id
+            LEFT JOIN multifamily_residential ON apartments.address_id = multifamily_residential.id
+            WHERE multifamily_residential.id = ? 
+            AND users.id IS NULL
+        ";
+    } else if ($_GET['settled'] == 's') {
+        // Для заселённых квартир используем INNER JOIN
+        $sql .= "
+            INNER JOIN users ON apartments.id = users.apartment_id
+            LEFT JOIN multifamily_residential ON apartments.address_id = multifamily_residential.id
+            WHERE multifamily_residential.id = ?
+        ";
+    } else { $sql .= "
+            LEFT JOIN users ON apartments.id = users.apartment_id
+            LEFT JOIN multifamily_residential ON apartments.address_id = multifamily_residential.id
+            WHERE multifamily_residential.id = ? "; }
 
+    // Завершение запроса
     $sql .= " ORDER BY apartments.number, users.id";
 
-    $resultad = mysqli_query($mysqli, $sql);
+
+    
+    // Подготавливаем и выполняем запрос
+    $stmt = $mysqli->prepare($sql);
+    $stmt->bind_param('i', $_SESSION['address_id']);
+    $stmt->execute();
+    
+    $resultad = $stmt->get_result();
     $apartments = [];
 
     while ($row = mysqli_fetch_assoc($resultad)) {

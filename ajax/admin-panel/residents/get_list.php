@@ -11,13 +11,16 @@ else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     $sql = "SELECT users.id, users.name, users.last_name, apartments.number AS apartment_number, apartments.floor AS apartment_floor
     FROM users
-    LEFT JOIN apartments ON users.apartment_id = apartments.id;";
+    INNER JOIN apartments ON users.apartment_id = apartments.id
+    INNER JOIN multifamily_residential on apartments.address_id = multifamily_residential.id";
 
     $result = mysqli_query($mysqli, $sql);
 
 
     if(mysqli_num_rows($result) > 0) {
         echo '
+        <div id="output_info_delete"></div>
+
             <table class = "table table-striped table-hover">
                 <tr>
 
@@ -42,7 +45,7 @@ else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         <button onclick="openResidentModal('.$row["id"].')">Edytuj</button>
                     </td>
                     <td>
-                        <i class="fas fa-times delete" onclick="deleteResident('.$row["id"].')"></i>
+                        <i class="fas fa-times delete""></i>
                     </td
                 </tr>
 

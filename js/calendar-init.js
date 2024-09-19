@@ -1,4 +1,18 @@
-    var calendarEl = document.getElementById('calendarEl');
+
+
+var calendarEl = document.getElementById('calendarEl');
+
+function closeModal() {
+    document.getElementById('eventModal').style.display = 'none';
+    
+}
+window.onclick = function(event) {
+
+    var modal = document.getElementById("eventModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
@@ -52,8 +66,8 @@
                         }
                     }
 
-                    var eventStart = new Date(dateStr + ' ' + (startTime || '00:00') + ':00');
-                    var eventEnd = endTime ? new Date(dateStr + ' ' + endTime + ':00') : new Date(eventStart.getTime());
+                    var eventStart = new Date(dateStr + ' ' + (startTime || '00:00'));
+                    var eventEnd = endTime ? new Date(dateStr + ' ' + endTime) : new Date(eventStart.getTime());
 
                     if (eventEnd < eventStart) {
                         alert("Data zakończenia nie może być wcześniej niż rozpoczęcia");
@@ -71,20 +85,24 @@
                     const formData = new FormData();
                     formData.append('name', name);
                     formData.append('description', description);
-                    formData.append('startTime', eventStart.toISOString());
-                    formData.append('endTime', eventEnd.toISOString());
-
+                    formData.append('startTime', eventStart.toISOString().slice(0, 19).replace('T', ' '));
+                    formData.append('endTime', eventEnd.toISOString().slice(0, 19).replace('T', ' '));
+                    
                     const xhttp = new XMLHttpRequest();
                     xhttp.onload = function() {
+                        console.log(this.responseText);
                         if (xhttp.status === 200) {
+                            
                             window.addEvent();
                             // Обновите календарь после добавления события
                             calendar.refetchEvents();
+                            
                         } else {
                             alert(this.responseText);
                         }
                     };
                     xhttp.open('POST', 'ajax/events/add.php');
+                    //xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencode');
                     xhttp.send(formData);
                 }
             }
@@ -101,6 +119,37 @@
                 }
             };
             xhr.send();
-        }
+        },
+        eventRender: function(info) {
+            // Обработка отображения рекуррентных событий
+            if (info.event.extendedProps.rrule) {
+                var rrule = new RRule({
+                    freq: RRule[info.event.extendedProps.rrule.freq.toUpperCase()],
+                    byweekday: info.event.extendedProps.rrule.byweekday.map(day => RRule[day.toUpperCase()])
+                });
+
+                var occurrences = rrule.all();
+                occurrences.forEach(function(date) {
+                    var eventCopy = {
+                        title: info.event.title,
+                        start: date,
+                        end: info.event.end // или вычислить по длине исходного события
+                    };
+                    calendar.addEvent(eventCopy);
+                });
+
+                return false; // Не отображать исходное событие
+            }
+        },
+        eventClick: function(info) {
+                // Открываем модальное окно и заполняем его данными
+                document.getElementById('eventTitle').innerText = info.event.title;
+                document.getElementById('eventStart').innerText = info.event.start.toLocaleString();
+                document.getElementById('eventEnd').innerText = info.event.end ? info.event.end.toLocaleString() : '';
+                document.getElementById('eventDescription').innerText = info.event.extendedProps.description || 'Brak opisu';
+
+                document.getElementById('eventModal').style.display = 'block';
+            },
+
     });
     calendar.render();

@@ -1,14 +1,20 @@
 <?php
     include("config.php");
 
-    if(isset($_SESSION['logged']) && $_SESSION['logged'] && isset($_SESSION['username']) && ($_SESSION['admin'])){
-        $sql = "SELECT * FROM users WHERE id = '{$_SESSION['user_id']}'";
-        $result = $mysqli -> query($sql);
-        $row = $result -> fetch_assoc();
-        if(!$row['admin']) {
-            header("Location: /index.php");
+    if (isset($_SESSION['logged']) && $_SESSION['logged'] && isset($_SESSION['username'])) {
+        // Запрос для проверки, является ли пользователь администратором
+        $sql = "SELECT * FROM administrators WHERE user_id = ? LIMIT 1";
+        $stmt = $mysqli->prepare($sql);
+        $stmt->bind_param("i", $_SESSION['user_id']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        // Если запись не найдена, пользователь не является администратором
+        if ($result->num_rows == 0) {
+            header("Location: /index.php"); // Перенаправление, если не администратор
+            exit(); // Завершаем выполнение скрипта
         }
-    }
+    }    
     else {
         header("Location: /index.php");
     }
@@ -61,25 +67,25 @@
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="true" href="#" onclick="addNews()" id="addNews">Dodaj nowość</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="true" href="#" onclick="addNews()" id="addNews">Dodaj nowość</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="apartments_list()" id="apartments">Mieszkania</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="apartments_list()" id="apartments">Mieszkania</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residents_list()" id="residents">Mieszkańcy</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residents_list()" id="residents">Mieszkańcy</button>
             </li>
             <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</button>
             </li>
             <li>
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="addEvent()" id="event">Wydarzenia</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="addEvent()" id="event">Wydarzenia</button>
             </li>
             <li>
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="payments()" id="payment">Opłata miesięczna</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="payments()" id="payment">Opłata miesięczna</button>
             </li>
             <li>
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="loadIssues()" id="issues">Usterki</a>
+                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="loadIssues()" id="issues">Usterki</button>
             </li>
         </ul>
 

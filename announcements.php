@@ -4,7 +4,7 @@
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $offset = ($page - 1) * $limit;
 
-    $sql = "SELECT id, title, date_published FROM news ORDER BY date_published DESC LIMIT $limit OFFSET $offset";
+    $sql = "SELECT id, title, date_published FROM announcements ORDER BY date_published DESC LIMIT $limit OFFSET $offset";
     $result = $mysqli->query($sql);
 ?>
 
@@ -53,7 +53,7 @@
     function loadNews() {
         if (endOfNews) return;
 
-            fetch(`ajax/news/load_more.php?page=${page}&limit=${limit}`)
+            fetch(`ajax/announcements/load_more.php?page=${page}&limit=${limit}`)
             .then(response => response.text())
             .then(data => {
                 if (data.trim() === "END") {

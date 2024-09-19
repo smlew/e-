@@ -1,3 +1,4 @@
+
 const triggerTabList = document.querySelectorAll('#myTab button')
 triggerTabList.forEach(triggerEl => {
     const tabTrigger = new bootstrap.Tab(triggerEl)
@@ -12,17 +13,20 @@ function addNews() {
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
         document.getElementById('control_window').innerHTML = this.response;
+
+        
         $('#upload_news').off('submit').on('submit', (function(event) {
             event.preventDefault();
             var form = document.getElementById('upload_news');
             var formData = new FormData(form);
             $.ajax ({
                 type: 'POST',
-                url: '/ajax/admin-panel/news/upload_news.php',
+                url: '/ajax/admin-panel/announcements/announcement.php',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    console.log(response);
                     if (response == 'ok') {
                         
                         document.getElementById('info_output_news').innerHTML = 'Nowość została pomyślnie dodana do bazy danych';
@@ -34,7 +38,7 @@ function addNews() {
             });
         }));
     };
-    xhttp.open("GET", "ajax/admin-panel/news/upload_news_form.php");
+    xhttp.open("GET", "ajax/admin-panel/announcements/announcement_form.php");
     xhttp.send();
 }
 
@@ -273,8 +277,7 @@ function addEvent() {
     xhttp.onload = function () {
         const controlWindow = document.getElementById('control_window');
         controlWindow.innerHTML = ''; // очищаем содержимое элемента
-        
-        
+
         const response = JSON.parse(this.responseText);
 
         const divCalendar = document.createElement('div');
@@ -352,7 +355,7 @@ function addEvent() {
                             alert('Usunięcie nie powiodło się');
                         }
                     }
-                    xhttp.open('POST', 'ajax/events/delete.php');
+                    xhttp.open('POST', 'ajax/events/delete.php', true);
                     xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
                     xhttp.send('id=' + encodeURIComponent(event.id));
                 }
@@ -553,6 +556,7 @@ function deleteApartment(id) {
     const xhttp = new XMLHttpRequest();
     
     xhttp.onload = function() {
+        console.log(this.responseText);
         if (this.status >= 200 && this.status < 300) {
             try {
                 const response = JSON.parse(this.responseText);
@@ -570,9 +574,10 @@ function deleteApartment(id) {
     };
 
     xhttp.open("POST", "/ajax/admin-panel/apartments/delete.php", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhttp.send("id=" + encodeURIComponent(id));
 }
+
 
 function openResidentModal(id) {
     var modal = document.getElementById("myModal");
@@ -702,6 +707,7 @@ function openApartmentModal(id) {
 
                 const xhttp = new XMLHttpRequest;
                 xhttp.onload = function () {
+                    console.log(this.responseText);
                     const response = JSON.parse(this.responseText);
                     if (response.success) {
                         alert('Użytkownika usunięto');
@@ -749,3 +755,4 @@ function closeAddModal() {
         }
     }
 }
+

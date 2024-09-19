@@ -5,7 +5,7 @@ $limit = 10; // Количество новостей на одной стран
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($page - 1) * $limit;
 
-$sql = "SELECT id, title, date_published FROM news ORDER BY date_published DESC LIMIT $limit OFFSET $offset";
+$sql = "SELECT id, title, date_published FROM announcements ORDER BY date_published DESC LIMIT $limit OFFSET $offset";
 $result = $mysqli->query($sql);
 ?>
 
@@ -20,7 +20,7 @@ $result = $mysqli->query($sql);
 </ul>
 
 <?php
-$totalResult = $mysqli->query("SELECT COUNT(*) AS total FROM news")->fetch_assoc()['total'];
+$totalResult = $mysqli->query("SELECT COUNT(*) AS total FROM announcements")->fetch_assoc()['total'];
 $totalPages = ceil($totalResult / $limit);
 ?>
 

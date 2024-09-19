@@ -11,8 +11,6 @@ $sql = "UPDATE payments
 
 mysqli_query($mysqli, $sql);
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-
 $monthYear = date('Y-m-15');
 
 $sql = "SELECT id FROM apartments";

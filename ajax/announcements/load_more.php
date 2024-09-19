@@ -12,7 +12,7 @@
         ELSE text
     END AS text,
     
-    date_published, image_path FROM news ORDER BY date_published DESC LIMIT $limit OFFSET $offset";
+    date_published, image_path FROM announcements ORDER BY date_published DESC LIMIT $limit OFFSET $offset";
     $result = $mysqli->query($sql);
 
     if ($result->num_rows > 0) {

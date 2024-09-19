@@ -8,6 +8,7 @@ function zero() {
   $_SESSION['logged'] = false;
   $_SESSION['admin'] = false;
   $_SESSION['user_id'] = -1;
+  $_SESSION['address_id'] = -1;
 }
 
 if ($mysqli -> connect_errno) {

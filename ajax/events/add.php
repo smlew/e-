@@ -7,12 +7,15 @@ if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
     exit;
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Получаем данные из POST запроса
     $name = isset($_POST['name']) ? $_POST['name'] : null;
-    $desription = isset($_POST['description']) ? $_POST['description'] : null;
+    $description = isset($_POST['description']) ? $_POST['description'] : null;
     $startTime = isset($_POST['startTime']) ? $_POST['startTime'] : null;
     $endTime = isset($_POST['endTime']) ? $_POST['endTime'] : null;
+
+    echo $name.$startTime,$endTime;
 
     // Проверяем, что все необходимые данные переданы
     if ($name && $startTime && $endTime) {
@@ -20,15 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $startDateTime = new DateTime($startTime);
         $endDateTime = new DateTime($endTime);
 
-        $startDateTime->setTimezone(new DateTimeZone('Europe/Warsaw'));
-        $endDateTime->setTimezone(new DateTimeZone('Europe/Warsaw'));
-
         $startDateTime = $startDateTime->format('Y-m-d H:i:s');
         $endDateTime = $endDateTime->format('Y-m-d H:i:s');
 
         // Подготавливаем SQL запрос для вставки данных в таблицу
-        $stmt = $mysqli->prepare("INSERT INTO events (title, description, start_date, end_date) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param('ssss', $name, $description, $startDateTime, $endDateTime);
+        $stmt = $mysqli->prepare("INSERT INTO events (title, description, start_date, end_date, address_id) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param('ssssi', $name, $description, $startDateTime, $endDateTime, $_SESSION['address_id']);
 
         // Выполняем запрос и проверяем результат
         if ($stmt->execute()) {

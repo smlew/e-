@@ -16,8 +16,9 @@ if (isset($_GET['id'])) {
         
         <form id="update_apartment_modal" action="" method="post">
             <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-            Numer mieszkania:   <input type="text" name="number" value="<?php echo $row['number']; ?>"><br>
-            Piętro:             <input type="text" name="floor" value="<?php echo $row['floor']; ?>"><br>
+            Numer mieszkania:   <input type="text" name="number"    value="<?php echo $row['number'];                               ?>"><br>
+            Litera:             <input type="text" name="letter"    value="<?php echo isset($row['letter']) ? $row['letter'] : '';  ?>"><br>
+            Piętro:             <input type="text" name="floor"     value="<?php echo $row['floor'];                                ?>"><br>
             
             <input type="submit" value="Aktualizuj dane">
 

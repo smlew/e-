@@ -21,6 +21,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/login-script.js"></script>
+
+
 
     <style>
         #calendar {
@@ -38,6 +42,24 @@
 
 <div class="container-xl">
     <div id='calendar'></div>
+
+    <div class="modal" id="eventModal" tabindex="-1" role="dialog" style="display: none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventTitle"></h5>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Start:</strong> <span id="eventStart"></span></p>
+                    <p><strong>Koniec:</strong> <span id="eventEnd"></span></p>
+                    <p><strong>Opis:</strong> <span id="eventDescription"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Zamknij</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -47,54 +69,68 @@
 
 <script type='module'>
 
+    
 
   document.addEventListener('DOMContentLoaded', function() {
 
-      var calendarEl = document.getElementById('calendar');
 
-      var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          events: function(fetchInfo, successCallback, failureCallback) {
-              var xhr = new XMLHttpRequest();
-              xhr.open('GET', 'ajax/events/get_events.php');
-              xhr.onload = function() {
-                  if (xhr.status === 200) {
-                      var events = JSON.parse(xhr.responseText);
-                      successCallback(events);
-                  } else {
-                      failureCallback(xhr.statusText);
-                  }
-              };
-              xhr.send();
-          },
-          eventRender: function(info) {
-              // Обработка отображения рекуррентных событий
-              if (info.event.extendedProps.rrule) {
-                  var rrule = new RRule({
-                      freq: RRule[info.event.extendedProps.rrule.freq.toUpperCase()],
-                      byweekday: info.event.extendedProps.rrule.byweekday.map(day => RRule[day.toUpperCase()])
-                  });
+    var calendarEl = document.getElementById('calendar');
 
-                  var occurrences = rrule.all();
-                  occurrences.forEach(function(date) {
-                      var eventCopy = {
-                          title: info.event.title,
-                          start: date,
-                          end: info.event.end // или вычислить по длине исходного события
-                      };
-                      calendar.addEvent(eventCopy);
-                  });
 
-                  return false; // Не отображать исходное событие
-              }
-          }
-      });
 
-      calendar.render();
-  });
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: function(fetchInfo, successCallback, failureCallback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'ajax/events/get_events.php');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var events = JSON.parse(xhr.responseText);
+                    successCallback(events);
+                } else {
+                    failureCallback(xhr.statusText);
+                }
+            };
+            xhr.send();
+        },
+        eventRender: function(info) {
+            // Обработка отображения рекуррентных событий
+            if (info.event.extendedProps.rrule) {
+                var rrule = new RRule({
+                    freq: RRule[info.event.extendedProps.rrule.freq.toUpperCase()],
+                    byweekday: info.event.extendedProps.rrule.byweekday.map(day => RRule[day.toUpperCase()])
+                });
+
+                var occurrences = rrule.all();
+                occurrences.forEach(function(date) {
+                    var eventCopy = {
+                        title: info.event.title,
+                        start: date,
+                        end: info.event.end // или вычислить по длине исходного события
+                    };
+                    calendar.addEvent(eventCopy);
+                });
+
+                return false; // Не отображать исходное событие
+            }
+        },
+        eventClick: function(info) {
+            // Открываем модальное окно и заполняем его данными
+            document.getElementById('eventTitle').innerText = info.event.title;
+            document.getElementById('eventStart').innerText = info.event.start.toLocaleString();
+            document.getElementById('eventEnd').innerText = info.event.end ? info.event.end.toLocaleString() : '';
+            document.getElementById('eventDescription').innerText = info.event.extendedProps.description || 'Brak opisu';
+
+            document.getElementById('eventModal').style.display = 'block';
+        }
+    });
+
+    calendar.render();
+    });
+
 </script>
 
-<script src="./js/login-script.js"></script>
+
     
 </body>
 </html>

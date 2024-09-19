@@ -2,34 +2,65 @@
     include(dirname(__DIR__,1)."/config.php");
 
     function login($mysqli, $username, $password) {
-        // Sprawdzanie nazwy użytkownika i hasła w bazie danych
+        // Проверка имени пользователя в базе данных
         $sql = "SELECT * FROM users WHERE username = ? LIMIT 1";
         $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("s", $username); // Powiązanie parametrów zapytania ze zmiennymi
+        $stmt->bind_param("s", $username);
         $stmt->execute();
-
-        $result = $stmt->get_result(); // Uzyskiwanie wyniku zapytania
-        $row = $result->fetch_assoc(); // Pobieranie tablicy asocjacyjnej z wynikiem zapytania
-
-
+    
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+    
         if ($result->num_rows == 1) {
-            $salt = $row['salt']; // Wyodrębnianie soli z wyniku zapytania
+            $salt = $row['salt']; // Получение соли из базы данных
+            // Проверка пароля с солью
             if (password_verify($password . $salt, $row['password'])) {
-                // Po pomyślnym zalogowaniu skonfiguruj sesję i przekieruj użytkownika na bezpieczną stronę
-                $_SESSION['logged']     = true;
-                $_SESSION['user_id']    = $row['id'];
-                $_SESSION['username']   = $username; // Zapisujemy imię i id użytkownika do sesji
-                if ($row['admin'])      { $_SESSION['admin'] = true; }
-                else                    { $_SESSION['admin'] = false; }
-
-                die(true);
+                // Успешная проверка пароля
+                $_SESSION['logged']   = true;
+                $_SESSION['user_id']  = $row['id'];
+                $_SESSION['username'] = $username;
+    
+                // Проверка, является ли пользователь администратором
+                $sql_admin = "SELECT address_id FROM administrators WHERE user_id = ?";
+                $stmt_admin = $mysqli->prepare($sql_admin);
+                $stmt_admin->bind_param("i", $row['id']);
+                $stmt_admin->execute();
+    
+                $result_admin = $stmt_admin->get_result();
+                $row_admin = $result_admin->fetch_assoc();
+    
+                if ($result_admin->num_rows == 1) {
+                    $_SESSION['admin']      = true;
+                    $_SESSION['address_id'] = $row_admin['address_id']; // Привязка к блоку администратора
+                } else {
+                    $_SESSION['admin'] = false;
+                }
+    
+                // Если пользователь не администратор, определяем его квартиру и address_id
+                if (!$row_admin && $row['apartment_id']) {
+                    $apartment_id = $row['apartment_id'];
+                    $sql_apartment = "SELECT address_id FROM apartments WHERE id = ? LIMIT 1";
+                    $stmt_apartment = $mysqli->prepare($sql_apartment);
+                    $stmt_apartment->bind_param("i", $apartment_id);
+                    $stmt_apartment->execute();
+    
+                    $result_apartment = $stmt_apartment->get_result();
+                    $row_apartment = $result_apartment->fetch_assoc();
+    
+                    if ($result_apartment->num_rows == 1) {
+                        $_SESSION['address_id'] = $row_apartment['address_id']; // Привязка к адресу квартиры
+                    }
+                }
+    
+                die(true); // Успешный вход
             } else {
-                die(false);
+                die(false); // Неверный пароль
             }
         } else {
-            die(false);
+            die(false); // Пользователь не найден
         }
     }
+    
 
     
     if(isset($_POST['username']) && $_POST['username'] != ""){

@@ -8,7 +8,7 @@ if (!$_SESSION['logged'] and !isset($_SESSION['user_id'])) {
 
 $id = $_GET['id'];
 
-$sql = 'SELECT title, text, image_path, date_published FROM news WHERE id=?';
+$sql = 'SELECT title, text, image_path, date_published FROM announcements WHERE id=?';
 $stmt = $mysqli -> prepare($sql);
 $stmt->bind_param('i', $id);
 $stmt->execute();

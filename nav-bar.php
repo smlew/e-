@@ -1,6 +1,35 @@
 <?php
     if($_SESSION['logged'] && isset($_SESSION['username'])){
-        $sql = "SELECT * FROM users WHERE id = '{$_SESSION['user_id']}'";
+
+        if ($_SESSION['admin']) {
+            $sql = "
+                SELECT 
+                    users.username AS username, 
+                    multifamily_residential.address AS address, 
+                    multifamily_residential.block AS block
+                FROM 
+                    users
+                INNER JOIN 
+                    administrators ON users.id = administrators.user_id
+                INNER JOIN 
+                    multifamily_residential ON administrators.address_id = multifamily_residential.id
+                WHERE 
+                    users.id = '{$_SESSION['user_id']}';
+            ";
+        } else {
+        $sql = "SELECT 
+                    users.username AS username, 
+                    multifamily_residential.address AS address
+                FROM 
+                    users
+                LEFT JOIN 
+                    apartments ON users.apartment_id = apartments.id
+                LEFT JOIN 
+                    multifamily_residential ON apartments.address_id = multifamily_residential.id
+                WHERE 
+                    users.id = '{$_SESSION['user_id']}';
+                ";
+        }
         $result = $mysqli -> query($sql);
         $row = $result -> fetch_assoc();
     }
@@ -34,7 +63,9 @@
                 ?>
 
             </ul>
-
+            <span class="navbar-text address">
+                <?php echo $row['address']?>
+            </span>
             <!-- <form class="d-flex nav-search-form" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>

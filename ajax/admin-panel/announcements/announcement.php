@@ -67,7 +67,7 @@ if (isset($_POST['title'])) {
 
 
             // Zapytanie SQL do wstawienia danych do bazy danych
-            $sql = "INSERT INTO news (user_id, title, text, date_published, image_path) VALUES ('$_SESSION[user_id]','$title', '$text', '$date', '$imagePath')";
+            $sql = "INSERT INTO announcements (user_id, title, text, date_published, image_path) VALUES ('$_SESSION[user_id]','$title', '$text', '$date', '$imagePath')";
 
             if ($mysqli->query($sql) === TRUE) {
                 die('ok');

@@ -38,7 +38,7 @@ if (!empty($_FILES['images']['name'][0])) {
         move_uploaded_file($tmp_name, $_SERVER['DOCUMENT_ROOT'] . $target_file);
 
         // Zapis ścieżki do bazy danych
-        $sql = "INSERT INTO issueImages (issue_id, image_path) VALUES (?, ?)";
+        $sql = "INSERT INTO report_images (issue_id, image_path) VALUES (?, ?)";
         $stmt = $mysqli->prepare($sql);
         $stmt->bind_param('is', $issue_id, $target_file);
         $stmt->execute();

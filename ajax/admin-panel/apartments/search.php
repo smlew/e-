@@ -6,24 +6,36 @@ $query = isset($_GET['query']) ? $_GET['query'] : '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-    $sql = $mysqli->prepare("
+    
+    $sql = "
     SELECT
-        apartments.id AS apartment_id,
-        apartments.number AS apartment_number,
-        apartments.floor AS apartment_floor,
-        apartments.letter AS apartment_letter,
-        users.id AS user_id,
-        users.name AS name,
-        users.last_name AS last_name
+        apartments.id                   AS apartment_id,
+        apartments.number               AS apartment_number,
+        apartments.letter               AS apartment_letter,
+        apartments.floor                AS apartment_floor,
+        users.id                        AS user_id,
+        users.name                      AS name,
+        users.last_name                 AS last_name,
+        multifamily_residential.id      AS address_id,
+        multifamily_residential.address AS address,
+        multifamily_residential.block   AS block
     FROM
         apartments
-    LEFT JOIN
-        users ON apartments.id = users.apartment_id
-    WHERE number LIKE CONCAT('%', ?, '%') OR floor LIKE CONCAT('%', ?, '%')
-    ");
-    $sql->bind_param("ss", $query, $query);
-    $sql->execute();
-    $resultad = $sql->get_result();
+    LEFT JOIN users ON apartments.id = users.apartment_id
+    LEFT JOIN multifamily_residential ON apartments.address_id = multifamily_residential.id
+
+    WHERE multifamily_residential.id = ? AND (apartments.number LIKE CONCAT('%', ?, '%') OR apartments.floor LIKE CONCAT('%', ?, '%'))
+    ";
+    // Завершение запроса
+    $sql .= " ORDER BY apartments.number, users.id";
+
+    $stmt = $mysqli->prepare($sql);
+    
+    $stmt->bind_param("iii", $_SESSION['address_id'], $query, $query);
+    
+    $stmt->execute();
+    
+    $resultad = $stmt->get_result();
 
     $apartments = [];
 
@@ -49,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     echo '<table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th class="number">ID Mieszkania</th>
                 <th class="number">Numer Mieszkania</th>
                 <th class="number">Piętro</th>
                 <th>Mieszkańcy (id, imię i nazwisko)</th>
@@ -59,9 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <tbody>';
     foreach ($apartments as $apartment) { ?>
         <tr>
-            <td class="number">
-                <?php echo htmlspecialchars($apartment['id']); ?>
-            </td>
             <td class="number">
                 <?php echo htmlspecialchars($apartment['number']); ?>
             </td>

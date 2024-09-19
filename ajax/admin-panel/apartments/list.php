@@ -1,6 +1,6 @@
 <h2>Lista mieszkań</h2>
 <form id="searchForm" action="" method="get">
-    <input type="text" name="query" placeholder="Wyszukaj mieszkanie">
+    <input type="text" name="query" placeholder="Szukaj mieszkanie lub piętro">
     <input type="submit" value="Szukaj">
 </form>
 <button onclick="get_apartments_list('a')">Wyświetl wszystko</button>
@@ -29,7 +29,9 @@
             <span class="close">&times;</span>
             <form id="addApartment" action="" method="post">
                 Numer mieszkania: <input type="text" name="number"><br>
+                Litera: <input type="text" name="letter"><br>
                 Piętro: <input type="text" name="floor"><br>
+                
                 <input type="submit" value="Dodaj mieszkanie">
             </form>
             <div id="output_info_add"></div>
