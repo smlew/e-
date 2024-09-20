@@ -532,26 +532,6 @@ function apartments_list() {
     xhttp.send();
 }
 
-function residency_history() {
-    const xhttp = new XMLHttpRequest();
-    xhttp.onload = function () {
-        document.getElementById('control_window').innerHTML = this.response;
-        document.getElementById('searchHistoryForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const query = event.target.query.value;
-
-            const serachXhttp = new XMLHttpRequest();
-            serachXhttp.onload = function() {
-                document.getElementById("search_result").innerHTML = this.responseText;
-            };
-            serachXhttp.open("GET", "/ajax/admin-panel/residency_history/get_list.php?query=" + encodeURIComponent(query), true);
-            serachXhttp.send();
-        });
-    };
-    xhttp.open("GET", "/ajax/admin-panel/residency_history/list.php");
-    xhttp.send();
-}
-
 function deleteApartment(id) {
     const xhttp = new XMLHttpRequest();
     
@@ -669,58 +649,6 @@ function openApartmentModal(id) {
                 xhttp.send(params.toString());
             });
 
-            document.getElementById("add_resident_form").addEventListener('submit', function(event) {
-                event.preventDefault();
-                const form = document.getElementById("add_resident_form");
-                const formData = new FormData(form);
-                const params = new URLSearchParams();
-
-                formData.forEach((value, key) => {
-                    params.append(key, value);
-                })
-
-                const xhttp = new XMLHttpRequest;
-                xhttp.onload = function () {
-                    const response = JSON.parse(this.responseText);
-
-                    if (response.success) {
-                        alert('Użytkownika dodano');
-                        apartments_list();
-                    }
-                    else {
-                        alert(response.message);
-                    }
-                }
-                xhttp.open("POST", "ajax/admin-panel/residents/add_resident_to_apartment.php", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send(params.toString());
-            });
-
-            document.getElementById('remove_resident_form').addEventListener('submit', function (event) {
-                event.preventDefault();
-                const form = document.getElementById('remove_resident_form');
-                const formData = new FormData(form);
-                const params = new URLSearchParams();
-                formData.forEach((value, key) => {
-                    params.append(key, value);
-                });
-
-                const xhttp = new XMLHttpRequest;
-                xhttp.onload = function () {
-                    console.log(this.responseText);
-                    const response = JSON.parse(this.responseText);
-                    if (response.success) {
-                        alert('Użytkownika usunięto');
-                        apartments_list();
-                    }
-                    else {
-                        alert(response.message);
-                    }
-                }
-                xhttp.open("POST","ajax/admin-panel/residents/remove_resident_from_apartment.php", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send(params.toString());
-            });
         }
 
         var span = document.getElementsByClassName("close")[0];

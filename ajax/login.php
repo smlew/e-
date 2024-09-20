@@ -51,6 +51,17 @@
                         $_SESSION['address_id'] = $row_apartment['address_id']; // Привязка к адресу квартиры
                     }
                 }
+
+                $sql = 'SELECT owner FROM apartments WHERE owner = ?';
+                $stmt = $mysqli->prepare($sql);
+                $stmt->bind_param('i', $_SESSION['user_id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
+
+                if ($row) {
+                    $_SESSION['owner'] = true;
+                } 
     
                 die(true); // Успешный вход
             } else {

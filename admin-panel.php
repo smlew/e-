@@ -75,9 +75,7 @@
             <li class="nav-item">
                 <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residents_list()" id="residents">Mieszkańcy</button>
             </li>
-            <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="residency_history()" id="history">Historia zamieszkiwania</button>
-            </li>
+
             <li>
                 <button class="nav-link" data-bs-toggle="tab" role="tab" aria-selected="false" href="#" onclick="addEvent()" id="event">Wydarzenia</button>
             </li>

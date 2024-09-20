@@ -60,7 +60,16 @@
                         </li>
                     <?php
                     }
+
+                    if ($_SESSION['owner']) {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="owner-panel.php">Panel właściciela</a>
+                        </li>
+                        <?php
+                    }
                 ?>
+                
 
             </ul>
             <span class="navbar-text address">

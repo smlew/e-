@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
     $query = $_GET['query'];
     
 
-    $stmt = $mysqli->prepare("
+    $stmt = $mysqli->query("
         SELECT
             users.id AS user_id,
             users.name AS user_name,
@@ -37,20 +37,17 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
             apartments ON residency_history.apartment_id = apartments.id
         
         WHERE
-            apartments.number = ? OR users.name LIKE ? OR users.last_name LIKE ?
+            apartments.owner = ".$_SESSION['user_id']."
 
         ORDER BY
             residency_history.start_date DESC
         ;
     ");
+    
 
-    $stmt -> bind_param('sss', $query, $query, $query);
-    $stmt -> execute();
+    
 
-    $result = $stmt->get_result();
-
-
-    if (mysqli_num_rows($result) > 0) {
+    if ($stmt->num_rows > 0) {
         ?>
         <table class= "table table-striped table-hover">
             <thead>
@@ -68,7 +65,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
         <?php
 
 
-        while ($row = $result -> fetch_assoc()) {
+        while ($row = $stmt -> fetch_assoc()) {
             echo '<tr>
                 <td>' . htmlspecialchars($row['user_name']) . '</td>
                 <td>' . htmlspecialchars($row['user_last_name']) . '</td>
