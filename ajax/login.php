@@ -112,8 +112,6 @@
 
             } else {
                 die ('user');
-                // $url = $currentURL . "?userExists=" . urlencode(true);
-                // header("Location: $url");
             }
         } else {
             die (false);
