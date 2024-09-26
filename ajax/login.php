@@ -82,9 +82,7 @@
     }
 
     else if (isset($_POST['reg_username'])){
-        
         if($_POST['reg_pass'] == $_POST['reg_pass_repeat']){
-            
             $username = $_POST["reg_username"];
             $password = $_POST["reg_pass"];
             $name = $_POST["reg_name"];
@@ -97,7 +95,6 @@
             $result = $stmt->get_result();
             
             if($result -> num_rows == 0){
-                
                 $salt = bin2hex(random_bytes(16));
                 $hashed_password = password_hash($password . $salt, PASSWORD_DEFAULT);
                 
@@ -105,11 +102,9 @@
                 $stmt = $mysqli->prepare($query);
                 
                 $stmt->bind_param("ssssss", $username, $hashed_password, $email, $salt, $name, $last_name);
-                
                 $stmt->execute();
                 
                 die('ok');
-
             } else {
                 die ('user');
             }
