@@ -9,7 +9,7 @@ function zero() {
   $_SESSION['admin'] = false;
   $_SESSION['user_id'] = -1;
   $_SESSION['address_id'] = -1;
-  $_SESSION['owner'] = true;
+  $_SESSION['owner'] = false;
 }
 
 if ($mysqli -> connect_errno) {

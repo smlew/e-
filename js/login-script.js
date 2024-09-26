@@ -23,22 +23,17 @@ function loadLoginWindow() {
             });
         }));
         $('#registrationForm').off('submit').on('submit', (function(event) {
-
             if (document.forms['reg']['reg_pass'].value == document.forms['reg']['reg_pass_repeat'].value) {
                 event.preventDefault();
                 var formData = $(this).serialize();
-                
                 $.ajax({
                     type: 'POST',
                     url: 'ajax/login.php',
                     data: formData,
                     success: function(response) {
-                        //document.getElementById("errorContainerReg").innerHTML = this.responseText;
                         if (response == 'ok') {
-                            
                             document.getElementById("errorContainerReg").innerHTML = "Pomyślnie zarejestrowano, możesz się zalogować";
-                        }
-                        else if (response == 'user') {
+                        } else if (response == 'user') {
                             document.getElementById("errorContainerReg").innerHTML = "Użytkownik o takim loginie już istnieje";
                         }
                     }
