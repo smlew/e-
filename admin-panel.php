@@ -1,23 +1,10 @@
 <?php
     include("config.php");
 
-    if (isset($_SESSION['logged']) && $_SESSION['logged'] && isset($_SESSION['username'])) {
-        // Запрос для проверки, является ли пользователь администратором
-        $sql = "SELECT * FROM administrators WHERE user_id = ? LIMIT 1";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param("i", $_SESSION['user_id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        // Если запись не найдена, пользователь не является администратором
-        if ($result->num_rows == 0) {
-            header("Location: /index.php"); // Перенаправление, если не администратор
-            exit(); // Завершаем выполнение скрипта
-        }
-    }    
-    else {
-        header("Location: /index.php");
-    }
+    // if (!isset($_SESSION['logged']) && !$_SESSION['logged'] && !isset($_SESSION['username']) && !isset($_SESSION['admin']) && !$_SESSION['admin']) {
+    //     header("Location: /index.php");
+    // }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +19,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
+    <script src="js/login-script.js"></script>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     

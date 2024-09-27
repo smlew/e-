@@ -13,8 +13,6 @@ function addNews() {
     const xhttp = new XMLHttpRequest();
     xhttp.onload = function () {
         document.getElementById('control_window').innerHTML = this.response;
-
-        
         $('#upload_news').off('submit').on('submit', (function(event) {
             event.preventDefault();
             var form = document.getElementById('upload_news');
@@ -38,7 +36,7 @@ function addNews() {
             });
         }));
     };
-    xhttp.open("GET", "ajax/admin-panel/announcements/announcement_form.php");
+    xhttp.open("GET","ajax/admin-panel/announcements/announcement_form.php");
     xhttp.send();
 }
 

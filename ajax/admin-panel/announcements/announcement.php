@@ -2,9 +2,9 @@
 
 include (dirname(__DIR__,3)."/config.php");
 
-if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
+if (!($_SESSION['admin'])) {
     http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Forbidden']);
+    echo json_encode(['success'=>false, 'message'=>'Forbidden']);
     exit;
 }
 
@@ -19,8 +19,6 @@ if (isset($_POST['title'])) {
         die ("Błąd podczas przesyłania pliku: " . $_FILES["image"]["error"]); 
     }
     else {
-
-        
         // Sprawdzenie, czy plik został przesłany
         if ($_FILES['image']['error'] == UPLOAD_ERR_OK) {
             $fileName = NULL;

@@ -61,7 +61,7 @@
 
                 if ($row) {
                     $_SESSION['owner'] = true;
-                } 
+                }
     
                 die(true); // Успешный вход
             } else {

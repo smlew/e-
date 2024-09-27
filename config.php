@@ -1,8 +1,6 @@
 <?php
- 
-$mysqli = new mysqli("localhost","root","1010","e-osiedle");
-
 session_start();
+$mysqli = new mysqli("localhost","root","1010","e-osiedle");
 
 function zero() {
   $_SESSION['logged'] = false;
@@ -10,6 +8,7 @@ function zero() {
   $_SESSION['user_id'] = -1;
   $_SESSION['address_id'] = -1;
   $_SESSION['owner'] = false;
+  $_SESSION['username'] = null;
 }
 
 if ($mysqli -> connect_errno) {
