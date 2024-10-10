@@ -26,7 +26,7 @@ function manageResidents() {
                     alert(response.message);
                 }
             }
-            xhttp.open("POST", "ajax/admin-panel/residents/add_resident_to_apartment.php", true);
+            xhttp.open("POST", "ajax/owner-panel/add_resident_to_apartment.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(params.toString());
         });
@@ -52,7 +52,7 @@ function manageResidents() {
                     alert(response.message);
                 }
             }
-            xhttp.open("POST","ajax/admin-panel/residents/remove_resident_from_apartment.php", true);
+            xhttp.open("POST","ajax/owner-panel/remove_resident_from_apartment.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(params.toString());
         });

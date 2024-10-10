@@ -16,11 +16,10 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id="modal-body">
-                <!-- Formularz edycji zostanie załadowany tutaj -->
+<!-- Formularz edycji zostanie załadowany tutaj -->
             </div>
         </div>
-        <div id="output_info_update"></div>
-        
+        <div id="output_info_update"></div> 
     </div>
 
     <!-- Modal do dodawania -->

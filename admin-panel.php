@@ -1,9 +1,9 @@
 <?php
     include("config.php");
 
-    // if (!isset($_SESSION['logged']) && !$_SESSION['logged'] && !isset($_SESSION['username']) && !isset($_SESSION['admin']) && !$_SESSION['admin']) {
-    //     header("Location: /index.php");
-    // }
+    if (!$_SESSION['admin']) {
+        header("Location: /index.php");
+    }
 
 ?>
 <!DOCTYPE html>

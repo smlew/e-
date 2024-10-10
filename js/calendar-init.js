@@ -1,5 +1,4 @@
 
-
 var calendarEl = document.getElementById('calendarEl');
 
 function closeModal() {
@@ -33,7 +32,7 @@ window.onclick = function(event) {
 
                     var currentDate = new Date();
                     var maxDate = new Date();
-                    maxDate.setFullYear(currentDate.getFullYear() + 5);
+                    maxDate.setFullYear(currentDate.getFullYear() + 1);
 
                     var eventDate = new Date(dateStr + 'T00:00:00');
 
@@ -90,13 +89,15 @@ window.onclick = function(event) {
                     
                     const xhttp = new XMLHttpRequest();
                     xhttp.onload = function() {
-                        console.log(this.responseText);
                         if (xhttp.status === 200) {
-                            
-                            window.addEvent();
-                            // Обновите календарь после добавления события
+                            calendar.addEvent({
+                                title: name,
+                                start: eventStart,
+                                end: eventEnd,
+                                description: description
+                            });
+
                             calendar.refetchEvents();
-                            
                         } else {
                             alert(this.responseText);
                         }
@@ -121,35 +122,30 @@ window.onclick = function(event) {
             xhr.send();
         },
         eventRender: function(info) {
-            // Обработка отображения рекуррентных событий
             if (info.event.extendedProps.rrule) {
                 var rrule = new RRule({
                     freq: RRule[info.event.extendedProps.rrule.freq.toUpperCase()],
                     byweekday: info.event.extendedProps.rrule.byweekday.map(day => RRule[day.toUpperCase()])
                 });
-
                 var occurrences = rrule.all();
                 occurrences.forEach(function(date) {
                     var eventCopy = {
                         title: info.event.title,
                         start: date,
-                        end: info.event.end // или вычислить по длине исходного события
+                        end: info.event.end
                     };
                     calendar.addEvent(eventCopy);
-                });
 
-                return false; // Не отображать исходное событие
+                });
+                return false;
             }
         },
         eventClick: function(info) {
-                // Открываем модальное окно и заполняем его данными
                 document.getElementById('eventTitle').innerText = info.event.title;
                 document.getElementById('eventStart').innerText = info.event.start.toLocaleString();
                 document.getElementById('eventEnd').innerText = info.event.end ? info.event.end.toLocaleString() : '';
                 document.getElementById('eventDescription').innerText = info.event.extendedProps.description || 'Brak opisu';
-
                 document.getElementById('eventModal').style.display = 'block';
             },
-
-    });
-    calendar.render();
+        });
+        calendar.render();

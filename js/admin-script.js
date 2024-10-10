@@ -464,7 +464,6 @@ function apartments_list() {
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             document.getElementById('control_window').innerHTML = this.responseText;
-
             get_apartments_list('a');
 
             document.getElementById('searchForm').addEventListener('submit', function(event) {
@@ -649,16 +648,16 @@ function openApartmentModal(id) {
 
         }
 
-        var span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-            var modal = document.getElementById("myModal");
-            modal.style.display = "none";
+        var span=document.getElementsByClassName("close")[0];
+        span.onclick=function() {
+            var modal=document.getElementById("myModal");
+            modal.style.display="none";
         }
 
-        window.onclick = function(event) {
-            var modal = document.getElementById("myModal");
-            if (event.target == modal) {
-                modal.style.display = "none";
+        window.onclick=function(event) {
+            var modal=document.getElementById("myModal");
+            if (event.target==modal) {
+                modal.style.display="none";
             }
         }
     };
@@ -671,7 +670,6 @@ function closeAddModal() {
     span.onclick = function() {
         var addApartmentWindow = document.getElementById("addModal");
         addApartmentWindow.style.display = "none"
-        
     }
 
     window.onclick = function(event) {

@@ -36,22 +36,18 @@ while ($row = mysqli_fetch_assoc($resultad)) {
         'start'         => $row['event_start_date'],
         'end'           => $row['event_end_date'],
         'description'   => $row['event_description'],   
-        
-        // 'rrule'         => ['freq' => 'NULL', 'byweekday' => 'NULL']
     ];
 
     if (!empty($row['event_recurrence'])) {
         $recurrenceParts = explode(',', $row['event_recurrence']);
-        $freq = $recurrenceParts[0]; // "WEEKLY"
-        $byweekday = array_slice($recurrenceParts, 1); // ["MO", "TH"]
+        $freq = $recurrenceParts[0];
+        $byweekday = array_slice($recurrenceParts, 1);
 
         $event['rrule'] = [
             'dtstart' => $row['event_start_date'],
             'freq' => strtolower($freq),
             'byweekday' => array_map('strtolower', $byweekday)
         ];
-
-        
     }
     
     $events[] = $event;

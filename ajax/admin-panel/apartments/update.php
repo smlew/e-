@@ -4,7 +4,7 @@ include dirname(__DIR__,3).'/config.php';
 
 if (!isset($_SESSION['user_id']) && !($_SESSION['admin'])) {
     http_response_code(403);
-    echo json_encode(['success' => false, 'message' => 'Forbidden']);
+    echo json_encode(['success'=>false,'message'=>'Forbidden']);
     exit;
 }
 
@@ -18,9 +18,8 @@ else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("ssi",$number, $floor, $id);
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Mieszkanie zaktualizowane!']);
-        // Można dodać przekierowanie po zaktualizowaniu danych, np. header('Location: index.php');
     } else {
-        echo json_encode(['success' => false, 'message' => 'Błąd: ' . $sql . '<br>' . ($stmt->error)]);
+        echo json_encode(['success' => false, 'message' => 'Błąd: '.$sql.'<br>'.($stmt->error)]);
     }
 }
 

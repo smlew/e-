@@ -62,23 +62,16 @@
                     document.getElementById('news-list').innerHTML += "<p>Nie ma więcej ogłoszeń.</p>";
                 } else {
                     document.getElementById('news-list').innerHTML += data;
-
-                    // Проверка, достаточно ли контента на экране
-                    if (document.body.scrollHeight <= window.innerHeight) {
-
-                        loadNews();  // Загрузка дополнительного контента, если нужно
-                    }
+                    if (document.body.scrollHeight <= window.innerHeight) { loadNews(); }
                 }
             })
             page++;
     }
 
-    // Изначальная загрузка
     document.addEventListener('DOMContentLoaded', function() {
         loadNews();
     });
 
-    // Загрузка при прокрутке
     window.onscroll = function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             loadNews();

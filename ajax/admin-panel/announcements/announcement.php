@@ -16,7 +16,7 @@ if (isset($_POST['title'])) {
     elseif  ($_FILES["image"]["error"] == UPLOAD_ERR_NO_TMP_DIR)    { die ("Błąd: Nie znaleziono katalogu tymczasowego do zapisywania pliku"); }
     elseif  ($_FILES["image"]["error"] == UPLOAD_ERR_EXTENSION)     { die ("Błąd: Rozszerzenie PHP zatrzymało ładowanie pliku"); }
     elseif  ($_FILES["image"]["error"] > 0 && $_FILES["image"]["error"] != UPLOAD_ERR_NO_FILE) {
-        die ("Błąd podczas przesyłania pliku: " . $_FILES["image"]["error"]); 
+        die ("Błąd podczas przesyłania pliku: " . $_FILES["image"]["error"]);
     }
     else {
         // Sprawdzenie, czy plik został przesłany
@@ -25,11 +25,7 @@ if (isset($_POST['title'])) {
 
             // Dozwolone rozszerzenia plików
             $allowedExtensions = array("jpg", "jpeg", "png", "gif");
-
-            // Pobierz rozszerzenie przesłanego pliku
             $extension = strtolower(pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION));
-
-            // Sprawdź, czy rozszerzenie pasuje do dozwolonych rozszerzeń
             if (!in_array($extension, $allowedExtensions)) {
                 die ("Błąd: Nieprawidłowe rozszerzenie pliku. Dozwolone są tylko pliki z rozszerzeniami: " . implode(", ", $allowedExtensions));
             }
@@ -58,18 +54,22 @@ if (isset($_POST['title'])) {
         try {
 
             // Przygotuj dane do wstawienia do bazy danych (ochrona przed atakami typu SQL injection)
-            $title = $mysqli->real_escape_string($_POST['title']);
-            $text = $mysqli->real_escape_string($_POST['text']);
-            $date = date('y-m-d H:i:s'); // Aktualna data i czas
+            $title = $_POST['title'];
+            $text = $_POST['text'];
+            $date = date('y-m-d H:i:s');
 
+            $sql = "INSERT INTO announcements (user_id,title,text,date_published,image_path) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $mysqli->prepare($sql);
+            $stmt->bind_param("sssss", $_SESSION['user_id'], $title, $text, $date, $imagePath);
 
-
-            // Zapytanie SQL do wstawienia danych do bazy danych
-            $sql = "INSERT INTO announcements (user_id, title, text, date_published, image_path) VALUES ('$_SESSION[user_id]','$title', '$text', '$date', '$imagePath')";
-
-            if ($mysqli->query($sql) === TRUE) {
+            if ($stmt->execute()) {
                 die('ok');
-            } else { throw new Exception("Błąd podczas dodawania nowości do bazy danych: " . $mysqli->error); }
+            } else {
+                throw new Exception("Błąd podczas dodawania nowości do bazy danych: " . $stmt->error);
+            }
+
+            // Закрытие подготовленного запроса
+            $stmt->close();
 
             // Próbujemy przenieść załadowany plik do określonego katalogu
 

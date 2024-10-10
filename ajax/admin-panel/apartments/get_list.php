@@ -1,4 +1,4 @@
-<button onclick="get_apartments_list('s')">Pokaż osiadłe mieszkania</button>
+<button onclick="get_apartments_list('s')">Pokaż zamieszkane mieszkania</button>
 <button onclick="get_apartments_list('u')">Pokaż puste mieszkania</button>
 
 <?php
@@ -53,7 +53,6 @@
     
     $resultad = $stmt->get_result();
     $apartments = [];
-
     while ($row = mysqli_fetch_assoc($resultad)) {
         $apartment_id = $row['apartment_id'];
         if (!isset($apartments[$apartment_id])) {
@@ -62,15 +61,13 @@
                 'number' => $row['apartment_number'],
                 'letter' => $row['apartment_letter'],
                 'floor' => $row['apartment_floor'],
-                'users' => []
-            ];
+                'users' => [] ];
         }
         if ($row['user_id']) {
             $apartments[$apartment_id]['users'][] = [
                 'id' => $row['user_id'],
                 'name' => $row['name'],
-                'last_name' => $row['last_name']
-            ];
+                'last_name' => $row['last_name'] ];
         }
     }
     echo '<table class="table table-striped table-hover">
@@ -86,7 +83,7 @@
     foreach ($apartments as $apartment) { ?>
         <tr>
             <td class="number">
-                <?php echo (htmlspecialchars(($apartment['number']) . ((isset($apartment['letter']) ? $apartment['letter'] : '')))); ?>
+                <?php echo (htmlspecialchars(($apartment['number']) . ((isset($apartment['letter']) ? $apartment['letter'] : '-')))); ?>
             </td>
             <td class="number">
                 <?php echo htmlspecialchars($apartment['floor']); ?>

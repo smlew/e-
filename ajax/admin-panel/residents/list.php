@@ -14,8 +14,6 @@ include (dirname(__DIR__, 3).'/config.php');
 
 <div id="resident_list_wrapper"></div>
 
-<!--button onclick="document.getElementById('addModal').style.display='block',closeAddModal()">Dodaj mieszkańca</button-->
-
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
